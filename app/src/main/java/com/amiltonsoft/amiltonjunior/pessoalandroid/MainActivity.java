@@ -1,5 +1,6 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,11 +15,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Inicializa o objeto Preferences
+        final Preferences preferences = new Preferences(getBaseContext());
+        // Inicializa o objeto DB
+        final DB db = new DB(getBaseContext());
+
+        // Caso queira testar as funcionalidades, basta descomentar
+        //preferences.testPreferences();
+        //db.testDB();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        // Listener do botão "+"
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
