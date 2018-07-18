@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -95,11 +96,48 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
 
+                // Índices das opções do menu de contexto
+                int MENU_EDIT   = 0;
+                int MENU_DELETE = 1;
+
                 // Define os itens do menu de contexto
-                contextMenu.add(Menu.NONE, 1, Menu.NONE, "Editar");
-                contextMenu.add(Menu.NONE, 2, Menu.NONE, "Remover");
+                contextMenu.add("Editar");
+                contextMenu.add("Remover");
 
                 //System.out.println("selectedItemId = " + selectedItemId);
+
+                // Listener da opção Editar
+                contextMenu.getItem(MENU_EDIT).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        //System.out.println("Clicou no Editar para o ID " + selectedItemId);
+
+                        return false;
+                    }
+                });
+
+                // Listener da opção Remover
+                contextMenu.getItem(MENU_DELETE).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        //System.out.println("Clicou no Remover para o ID " + selectedItemId);
+
+                        return false;
+                    }
+                });
+            }
+        });
+
+        listview.setOnContextClickListener(new View.OnContextClickListener() {
+            @Override
+            public boolean onContextClick(View view) {
+                System.out.println("CLICADO");
+
+                return false;
             }
         });
 
