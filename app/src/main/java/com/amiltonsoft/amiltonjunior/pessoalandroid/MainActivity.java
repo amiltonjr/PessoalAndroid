@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -53,6 +54,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Lista de pessoas
         ListView listview = (ListView) findViewById(R.id.listview);
+        // Define o listener da lista
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                System.out.println("id = " + getItemId(parent.getItemAtPosition(position).toString()));
+
+            }
+
+        });
         // Preenche a lista
         fillPersonList(listview);
 
@@ -82,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
     public void openSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    // Método que retorna com o ID de um registro baseado nos dados de uma listview
+    public int getItemId(String content) {
+        String lines[] = content.split("\n");
+        return Integer.valueOf(lines[0].substring(4));
     }
 
     // Método que preenche a lista de pessoas
