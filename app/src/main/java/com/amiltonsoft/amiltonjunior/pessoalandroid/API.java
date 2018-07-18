@@ -18,6 +18,8 @@ public class API {
         this.server = server;
         this.port   = port;
         this.db     = db;
+
+        System.out.println("Usando servidor da API, host = " + server + ", porta = " + port);
     }
 
     // Método que converte todos os dados das pessoas no banco de dados para JSON

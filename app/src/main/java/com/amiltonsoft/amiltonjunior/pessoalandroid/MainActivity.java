@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         // Inicializa o objeto DB
         final DB db = new DB(getBaseContext());
         // Inicializa o objeto API
-        final API api = new API("127.0.0.1", 8080, db);
+        final API api = new API(preferences.getAPIServerHost(), preferences.getAPIServerPort(), db);
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
