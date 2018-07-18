@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Preferences preferences;
     private DB db;
     private API api;
-    private int selectedItemId = -1;
+    private int selectedItemId  = -1;
+    private String USER_ID_KEY  = "ID"; // Chave do parâmetro para enviar entre as activities
 
     // Método invocado ao criar a Activity
     @Override
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         // Inicia a EditPersonActivity passando o ID do item como parâmetro
                         Intent intent = new Intent(MainActivity.this, EditPersonActivity.class);
                         Bundle b = new Bundle();
-                        b.putInt("ID", selectedItemId);
+                        b.putInt(USER_ID_KEY, selectedItemId);
                         intent.putExtras(b);
                         startActivity(intent);
 
@@ -132,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         //System.out.println("Clicou no Remover para o ID " + selectedItemId);
+
+                        // Inicia a RemovePersonActivity passando o ID do item como parâmetro
+                        Intent intent = new Intent(MainActivity.this, RemovePersonActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt(USER_ID_KEY, selectedItemId);
+                        intent.putExtras(b);
+                        startActivity(intent);
 
                         return false;
                     }

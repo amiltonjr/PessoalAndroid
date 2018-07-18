@@ -11,6 +11,10 @@ import android.widget.Spinner;
 
 public class EditPersonActivity extends AppCompatActivity {
 
+    // Atributos da classe
+    private String USER_ID_KEY  = "ID"; // Chave do parâmetro para enviar entre as activities
+    private int userID          = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +29,13 @@ public class EditPersonActivity extends AppCompatActivity {
         Button save     = (Button) findViewById(R.id.btnSave);
         Button cancel   = (Button) findViewById(R.id.btnCancel);
         Button remove   = (Button) findViewById(R.id.btnRemove);
+
+        // Recupera o ID do usuário passado via parâmetro
+        Bundle b = getIntent().getExtras();
+        if (b != null)
+            userID = b.getInt(USER_ID_KEY);
+
+        System.out.println("ID do usuário: " + userID);
 
         // Adiciona as opções ao spinner
         String[] arraySpinner = new String[] { "M", "F" }; // Tipos de sexo
