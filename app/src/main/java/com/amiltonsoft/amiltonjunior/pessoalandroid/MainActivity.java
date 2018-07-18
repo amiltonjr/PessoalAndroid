@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,19 +30,15 @@ public class MainActivity extends AppCompatActivity {
     private int selectedItemId  = -1;
     private String USER_ID_KEY  = "ID"; // Chave do parâmetro para enviar entre as activities
 
-    // Método invocado ao criar a Activity
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+    // Método que executa as rotinas de preparação e carregamento do aplicativo
+    private void startApplication() {
 
         // Inicializa o objeto Preferences
         preferences = new Preferences(getBaseContext());
-        preferences.clearPreferences();
+
         // Inicializa o objeto DB
         db = new DB(getBaseContext());
+
         // Inicializa o objeto API
         api = new API(preferences.getAPIServerHost(), preferences.getAPIServerPort(), db);
 
@@ -51,6 +46,28 @@ public class MainActivity extends AppCompatActivity {
         //preferences.testPreferences();
         //db.testDB(false);
         //api.testAPI();
+
+        // Preenche a lista de pessoas
+        fillPersonList((ListView) findViewById(R.id.listview));
+    }
+
+    // Método invocado ao resumir a visibilidade da activity
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Executa as rotinas de inicialização
+        startApplication();
+    }
+
+    // Método invocado ao criar a Activity
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Define para executar threads sem a necessidade de sincronizar
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -147,9 +164,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Preenche a lista
-        fillPersonList(listview);
-
         // Botão flutuante "+"
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         // Listener do botão "+"
@@ -179,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Método que retorna com o ID de um registro baseado nos dados de uma listview
+    // @param (String) content - Conteúdo do item da lista
+    // @return (int) - ID do item no banco de dados
     public int getItemId(String content) {
         String lines[] = content.split("\n");
         return Integer.valueOf(lines[0].substring(4));
