@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
         final Preferences preferences = new Preferences(getBaseContext());
         // Inicializa o objeto DB
         final DB db = new DB(getBaseContext());
+        // Inicializa o objeto API
+        final API api = new API("127.0.0.1", 8080, db);
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
