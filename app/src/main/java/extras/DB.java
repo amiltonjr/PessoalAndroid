@@ -114,6 +114,22 @@ public final class DB {
         db.delete(PersonEntry.TABLE_NAME, selection, selectionArgs);
     }
 
+    // Método que retorna com o nome da pessoa
+    // @param (int) id - ID do registro no banco de dados
+    // @return (String) - Nome da pessoa no banco de dados
+    public String getPersonName(int id) {
+        // Define o seletor para o ID do registro
+        String[] selectionArgs = { String.valueOf(id) };
+
+        // Faz a busca no banco de dados
+        Cursor res = db.rawQuery("SELECT * FROM " + PersonEntry.TABLE_NAME + " WHERE " + PersonEntry._ID + " = " + id, null);
+        // Volta ao início do Cursor
+        res.moveToFirst();
+
+        // Retorna com o nome da pessoa
+        return res.getString(res.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_NAME));
+    }
+
     // Método que remove todas as pessoas do banco de dados
     // @param (void)
     // @return (void)
