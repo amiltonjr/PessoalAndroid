@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
-        //db.testDB();
+        //db.testDB(true);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -104,7 +104,7 @@ public final class DB {
     }
 
     // Método que testa o funcionamento do banco de dados
-    public void testDB() {
+    public void testDB(boolean deleteAll) {
         // Inserir dados
         this.insert("Amilton Junior", 24, "M");
         this.insert("Deise Carolina", 25, "F");
@@ -132,7 +132,8 @@ public final class DB {
         }
 
         // Apaga todos os dados do banco de dados
-        this.deleteAll();
+        if (deleteAll)
+            this.deleteAll();
     }
 
     /****************************/
