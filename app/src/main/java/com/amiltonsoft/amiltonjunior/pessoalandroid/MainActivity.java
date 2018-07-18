@@ -34,18 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
-        db.testDB(false);
-
-        System.out.println("\nTestando sendData()...\n");
-        try {
-            System.out.println(api.sendData());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        db.deleteAll();
+        //db.testDB(true);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Em desenvolvimento", Snackbar.LENGTH_LONG)
                         .setAction("Adicionar Pessoa", null).show();
+
+                api.testAPI();
             }
         });
     }

@@ -23,6 +23,8 @@ public class API {
     private String server;
     private int port;
     private DB db;
+    public int OK_CODE      = 200; // Código de sucesso
+    public int ERROR_CODE   = 405; // Código de erro
 
     // Método construtor
     public API(String server, int port, DB db) {
@@ -34,24 +36,31 @@ public class API {
     }
 
     // Método que faz o envio dos dados da API
-    public String sendData() throws JSONException, IOException {
+    public int sendData() throws JSONException, IOException {
         // Obtém os dados em formato JSON
         String json = getAllPersonJson().toString();
 
-        System.out.println("String json = " + json);
+        //System.out.println("String json = " + json);
 
         // Cria um objeto Client HTTP
         OkHttpClient client = new OkHttpClient();
 
-        // Faz o envio dos dados e salva a resposta
-        RequestBody body    = new FormBody.Builder().add("message", "Your message").build();
-        Request request     = new Request.Builder().url(getAPIUrl()).method("post", body).build();
-        Response response   = client.newCall(request).execute();
+        // Prepara o envio dos dados
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("data", json).build();
+        Request request         = new Request.Builder().url(getAPIUrl()).post(requestBody).build();
 
-        System.out.print("Resposta do servidor: ");
+        // Faz o envio dos dados
+        try (Response response = client.newCall(request).execute()) {
+            // Em caso de erro, dispara uma exceção
+            if (!response.isSuccessful())
+                return ERROR_CODE;
 
-        // Retorna com a resposta
-        return response.body().string();
+            // Converte a resposta para JSON
+            JSONObject jsonResponse = new JSONObject(response.body().string());
+
+            // Retorna com o código de resposta de acordo com o recebido do servidor
+            return jsonResponse.getJSONObject("response").getInt("code");
+        }
     }
 
     // Método que retorna com a URL do servidor da API
@@ -101,6 +110,23 @@ public class API {
         json.put("person", people);
 
         return json;
+    }
+
+    // Método que faz o teste do envio dos dados da API
+    public void testAPI() {
+        db.testDB(false);
+
+        System.out.println("\nEnviando dados para o servidor API...\n");
+        try {
+            // Envia os dados da API
+            int res = this.sendData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        db.deleteAll();
     }
 
 }

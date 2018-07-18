@@ -9,8 +9,8 @@ public class Preferences {
     private String PREF_KEY         = "PESSOAS_PREFS";
     private String SERVER_KEY       = "server";
     private String PORT_KEY         = "port";
-    private String DEFAULT_SERVER   = "192.168.100.218";
-    private int DEFAULT_PORT        = 80;
+    private String DEFAULT_SERVER   = "192.168.0.107";
+    private int DEFAULT_PORT        = 8080;
     private Context context;
 
     // Método construtor
