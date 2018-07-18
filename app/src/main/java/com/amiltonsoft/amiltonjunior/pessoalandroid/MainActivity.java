@@ -1,6 +1,7 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -9,12 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import extras.API;
 import extras.DB;
 import extras.Preferences;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Atributos da classe
+    private Preferences preferences;
+    private DB db;
+    private API api;
 
     // Método invocado ao criar a Activity
     @Override
@@ -25,22 +35,28 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         // Inicializa o objeto Preferences
-        final Preferences preferences = new Preferences(getBaseContext());
+        preferences = new Preferences(getBaseContext());
         preferences.clearPreferences();
         // Inicializa o objeto DB
-        final DB db = new DB(getBaseContext());
+        db = new DB(getBaseContext());
         // Inicializa o objeto API
-        final API api = new API(preferences.getAPIServerHost(), preferences.getAPIServerPort(), db);
+        api = new API(preferences.getAPIServerHost(), preferences.getAPIServerPort(), db);
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
-        //db.testDB(true);
+        //db.testDB(false);
         //api.testAPI();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Lista de pessoas
+        ListView listview = (ListView) findViewById(R.id.listview);
+        // Preenche a lista
+        fillPersonList(listview);
+
+        // Botão flutuante "+"
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         // Listener do botão "+"
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +82,43 @@ public class MainActivity extends AppCompatActivity {
     public void openSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    // Método que preenche a lista de pessoas
+    // @param (ListView) listview - Ponteiro da lista
+    // @return (void)
+    public void fillPersonList(ListView listview) {
+        ArrayList<String> dados = new ArrayList<String>();
+
+        // Obtém os dados do banco de dados
+        Cursor people = db.readAll();
+
+        // Vai para o início do Cursor
+        people.moveToFirst();
+
+        // Percorre os resultados
+        while (people.getCount() > 0) {
+            // Obtém os dados da pessoa
+            int id      = people.getInt(people.getColumnIndexOrThrow(DB.PersonEntry._ID));
+            String name = people.getString(people.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_NAME));
+            int age     = people.getInt(people.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_AGE));
+            String sex  = people.getString(people.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_SEX));
+
+            // Adiciona os dados ao array String
+            dados.add("ID: " + id + "\n" + name + " - " + age + " anos - Sexo " + sex);
+
+            // Se era o último resultado, encerra o loop
+            if (people.isLast())
+                break;
+
+            // Move para o próximo resultado
+            people.moveToNext();
+        }
+
+
+        // Define o adapter e preenche a lista
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_selectable_list_item, dados);
+        listview.setAdapter(adapter);
     }
 
     @Override
