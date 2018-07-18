@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import extras.DB;
+
 public class EditPersonActivity extends AppCompatActivity {
 
     // Atributos da classe
     private String USER_ID_KEY      = "ID"; // Chave do parâmetro para enviar entre as activities
     private int userID              = -1;
-    private String[] arraySpinner   = new String[] { "M", "F" }; // Tipos de sexo
+    private String[] arraySpinner; // Tipos de sexo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +27,9 @@ public class EditPersonActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Cria os ponteiros para os elementos da activity
-        EditText name   = (EditText) findViewById(R.id.editTextName);
-        EditText age    = (EditText) findViewById(R.id.editTextAge);
-        Spinner sex     = (Spinner) findViewById(R.id.spinnerSex);
+        final EditText name   = (EditText) findViewById(R.id.editTextName);
+        final EditText age    = (EditText) findViewById(R.id.editTextAge);
+        final Spinner sex     = (Spinner) findViewById(R.id.spinnerSex);
         Button save     = (Button) findViewById(R.id.btnSave);
         Button cancel   = (Button) findViewById(R.id.btnCancel);
         Button remove   = (Button) findViewById(R.id.btnRemove);
@@ -39,7 +41,17 @@ public class EditPersonActivity extends AppCompatActivity {
 
         //System.out.println("ID do usuário: " + userID);
 
+        // Preenche com os dados do usuário no banco de dados
+        final DB db = new DB(getBaseContext());
+        name.setText(db.getPersonName(userID));
+        age.setText(String.valueOf(db.getPersonAge(userID)));
+
         // Adiciona as opções ao spinner
+        if (db.getPersonSex(userID).equals("M"))
+            arraySpinner   = new String[] { "M", "F" }; // Tipos de sexo
+        else
+            arraySpinner   = new String[] { "F", "M" }; // Tipos de sexo
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sex.setAdapter(adapter);
@@ -49,7 +61,13 @@ public class EditPersonActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("Botão Salvar clicado!");
+                //System.out.println("Botão Salvar clicado!");
+
+                // Atualiza a informação no banco de dados
+                db.update(userID, name.getText().toString(), Integer.valueOf(age.getText().toString()), sex.getSelectedItem().toString());
+
+                // Encerra a activity
+                finish();
 
             }
         });
