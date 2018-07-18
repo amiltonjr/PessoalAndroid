@@ -22,7 +22,7 @@ public class RemovePersonActivity extends AppCompatActivity {
         if (b != null)
             userID = b.getInt(USER_ID_KEY);
 
-        System.out.println("ID do usuário: " + userID);
+        //System.out.println("ID do usuário: " + userID);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

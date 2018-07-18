@@ -36,7 +36,7 @@ public class EditPersonActivity extends AppCompatActivity {
         if (b != null)
             userID = b.getInt(USER_ID_KEY);
 
-        System.out.println("ID do usuário: " + userID);
+        //System.out.println("ID do usuário: " + userID);
 
         // Adiciona as opções ao spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
