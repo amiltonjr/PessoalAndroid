@@ -114,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
                         //System.out.println("Clicou no Editar para o ID " + selectedItemId);
 
+                        // Inicia a EditPersonActivity passando o ID do item como parâmetro
+                        Intent intent = new Intent(MainActivity.this, EditPersonActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("ID", selectedItemId);
+                        intent.putExtras(b);
+                        startActivity(intent);
+
                         return false;
                     }
                 });
