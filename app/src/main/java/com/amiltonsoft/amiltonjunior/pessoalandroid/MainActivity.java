@@ -1,5 +1,6 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -43,10 +44,26 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Em desenvolvimento", Snackbar.LENGTH_LONG)
-                        .setAction("Adicionar Pessoa", null).show();
+                // Abre a AddPersonActivity
+                openAddPersonActivity();
             }
         });
+    }
+
+    // Método que abre a activity AddPersonActivity
+    // @param (void)
+    // @return (void)
+    public void openAddPersonActivity() {
+        Intent intent = new Intent(this, AddPersonActivity.class);
+        startActivity(intent);
+    }
+
+    // Método que abre a activity SettingsActivity
+    // @param (void)
+    // @return (void)
+    public void openSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -56,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Método listener do menu
+    // @param (MenuItem) item - Item selecionado
+    // @return (boolean) - Resultado a operação
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -63,9 +83,10 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // Se clicou na opção "Configurações" do menu
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Em desenvolvimento!", Toast.LENGTH_LONG).show();
+            // Abre a SettingsActivity
+            openSettingsActivity();
 
             return true;
         }
