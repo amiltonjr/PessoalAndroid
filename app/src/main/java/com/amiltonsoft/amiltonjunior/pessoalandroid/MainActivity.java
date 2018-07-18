@@ -1,6 +1,5 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
