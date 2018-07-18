@@ -13,6 +13,9 @@ import android.widget.Spinner;
 
 public class AddPersonActivity extends AppCompatActivity {
 
+    // Atributo da classe
+    private String[] arraySpinner = new String[] { "M", "F" }; // Tipos de sexo
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,6 @@ public class AddPersonActivity extends AppCompatActivity {
         Button cancel   = (Button) findViewById(R.id.btnCancel);
 
         // Adiciona as opções ao spinner
-        String[] arraySpinner = new String[] { "M", "F" }; // Tipos de sexo
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sex.setAdapter(adapter);

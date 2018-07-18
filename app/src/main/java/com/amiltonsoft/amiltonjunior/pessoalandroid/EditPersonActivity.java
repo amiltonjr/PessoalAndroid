@@ -12,8 +12,9 @@ import android.widget.Spinner;
 public class EditPersonActivity extends AppCompatActivity {
 
     // Atributos da classe
-    private String USER_ID_KEY  = "ID"; // Chave do parâmetro para enviar entre as activities
-    private int userID          = -1;
+    private String USER_ID_KEY      = "ID"; // Chave do parâmetro para enviar entre as activities
+    private int userID              = -1;
+    private String[] arraySpinner   = new String[] { "M", "F" }; // Tipos de sexo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,6 @@ public class EditPersonActivity extends AppCompatActivity {
         System.out.println("ID do usuário: " + userID);
 
         // Adiciona as opções ao spinner
-        String[] arraySpinner = new String[] { "M", "F" }; // Tipos de sexo
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sex.setAdapter(adapter);
