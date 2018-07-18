@@ -95,10 +95,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
 
+                // Define os itens do menu de contexto
                 contextMenu.add(Menu.NONE, 1, Menu.NONE, "Editar");
                 contextMenu.add(Menu.NONE, 2, Menu.NONE, "Remover");
 
-                System.out.println("selectedItemId = " + selectedItemId);
+                //System.out.println("selectedItemId = " + selectedItemId);
             }
         });
 
