@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
         //db.testDB(true);
+        //api.testAPI();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Em desenvolvimento", Snackbar.LENGTH_LONG)
                         .setAction("Adicionar Pessoa", null).show();
-
-                api.testAPI();
             }
         });
     }
