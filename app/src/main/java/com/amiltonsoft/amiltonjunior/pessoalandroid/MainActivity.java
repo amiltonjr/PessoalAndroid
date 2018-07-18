@@ -7,6 +7,7 @@ import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Preferences preferences;
     private DB db;
     private API api;
+    private int selectedItemId = -1;
 
     // Método invocado ao criar a Activity
     @Override
@@ -53,18 +55,53 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Lista de pessoas
-        ListView listview = (ListView) findViewById(R.id.listview);
-        // Define o listener da lista
+        final ListView listview = (ListView) findViewById(R.id.listview);
+
+        // Define o listener de click da lista
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                System.out.println("id = " + getItemId(parent.getItemAtPosition(position).toString()));
+                // Define o ID do item selecionado
+                selectedItemId = getItemId(parent.getItemAtPosition(position).toString());
+
+                // Mostra o menu de contexto ao clicar no item
+                listview.showContextMenu();
 
             }
 
         });
+
+        // Define o listener de click longo da lista
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // Define o ID do item selecionado
+                selectedItemId = getItemId(parent.getItemAtPosition(position).toString());
+
+                // Mostra o menu de contexto ao clicar no item
+                listview.showContextMenu();
+
+                return true;
+            }
+
+        });
+
+        // Define o menu de contexto do item da lista
+        listview.setOnCreateContextMenuListener(new AdapterView.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+                contextMenu.add(Menu.NONE, 1, Menu.NONE, "Editar");
+                contextMenu.add(Menu.NONE, 2, Menu.NONE, "Remover");
+
+                System.out.println("selectedItemId = " + selectedItemId);
+            }
+        });
+
         // Preenche a lista
         fillPersonList(listview);
 
