@@ -1,6 +1,7 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +11,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         // Inicializa o objeto Preferences
         final Preferences preferences = new Preferences(getBaseContext());
+        preferences.clearPreferences();
         // Inicializa o objeto DB
         final DB db = new DB(getBaseContext());
         // Inicializa o objeto API
@@ -25,7 +34,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
-        //db.testDB(true);
+        db.testDB(false);
+
+        System.out.println("\nTestando sendData()...\n");
+        try {
+            System.out.println(api.sendData());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        db.deleteAll();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
