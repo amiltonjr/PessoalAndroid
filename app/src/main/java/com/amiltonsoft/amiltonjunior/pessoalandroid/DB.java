@@ -29,7 +29,7 @@ public final class DB {
     }
 
     // Método que faz a inserção de um dado no banco de dados
-    public long insert(String name, String age, String sex) {
+    public long insert(String name, int age, String sex) {
         // Prepara os valores a serem inseridos
         ContentValues values = new ContentValues();
         values.put(PersonEntry.COLUMN_NAME, name);
@@ -68,7 +68,7 @@ public final class DB {
     }
 
     // Método que atualiza os dados de uma pessoa do banco de dados e retorna com o número de linhas afetadas
-    public int update(int id, String name, String age, String sex) {
+    public int update(int id, String name, int age, String sex) {
         // Prepara os valores
         ContentValues values = new ContentValues();
         values.put(PersonEntry.COLUMN_NAME, name);
@@ -106,8 +106,8 @@ public final class DB {
     // Método que testa o funcionamento do banco de dados
     public void testDB() {
         // Inserir dados
-        this.insert("Amilton Junior", "24", "M");
-        this.insert("Deise Carolina", "25", "F");
+        this.insert("Amilton Junior", 24, "M");
+        this.insert("Deise Carolina", 25, "F");
 
         // Ler dados
         Cursor res = this.readAll();
@@ -118,7 +118,7 @@ public final class DB {
             // Obtém os dados da pessoa
             int id      = res.getInt(res.getColumnIndexOrThrow(DB.PersonEntry._ID));
             String name = res.getString(res.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_NAME));
-            String age  = res.getString(res.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_AGE));
+            int age     = res.getInt(res.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_AGE));
             String sex  = res.getString(res.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_SEX));
 
             System.out.println("\n-\n" + "ID: " + id + "\nNome: " + name + "\nIdade: " + age + "\nSexo: " + sex);
