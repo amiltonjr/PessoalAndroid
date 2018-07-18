@@ -47,6 +47,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.amiltonsoft.amiltonjunior.pessoalandroid.MainActivity" />
         </activity>
+        <activity
+            android:name=".RemovePersonActivity"
+            android:label="@string/title_activity_remove_person"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.amiltonsoft.amiltonjunior.pessoalandroid.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
