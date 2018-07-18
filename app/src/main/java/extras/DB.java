@@ -114,6 +114,18 @@ public final class DB {
         db.delete(PersonEntry.TABLE_NAME, selection, selectionArgs);
     }
 
+    // Método que remove todas as pessoas do banco de dados
+    // @param (void)
+    // @return (void)
+    public void deleteAll() {
+        // Define o seletor para o ID do registro
+        String selection = PersonEntry._ID + " >= ?";
+        String[] selectionArgs = { "0" };
+
+        // Faz a remoção do banco de dados
+        db.delete(PersonEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
     // Método que retorna com o nome da pessoa
     // @param (int) id - ID do registro no banco de dados
     // @return (String) - Nome da pessoa no banco de dados
@@ -130,16 +142,36 @@ public final class DB {
         return res.getString(res.getColumnIndexOrThrow(DB.PersonEntry.COLUMN_NAME));
     }
 
-    // Método que remove todas as pessoas do banco de dados
-    // @param (void)
-    // @return (void)
-    public void deleteAll() {
+    // Método que retorna com a idade da pessoa
+    // @param (int) id - ID do registro no banco de dados
+    // @return (int) - Idade da pessoa no banco de dados
+    public int getPersonAge(int id) {
         // Define o seletor para o ID do registro
-        String selection = PersonEntry._ID + " >= ?";
-        String[] selectionArgs = { "0" };
+        String[] selectionArgs = { String.valueOf(id) };
 
-        // Faz a remoção do banco de dados
-        db.delete(PersonEntry.TABLE_NAME, selection, selectionArgs);
+        // Faz a busca no banco de dados
+        Cursor res = db.rawQuery("SELECT * FROM " + PersonEntry.TABLE_NAME + " WHERE " + PersonEntry._ID + " = " + id, null);
+        // Volta ao início do Cursor
+        res.moveToFirst();
+
+        // Retorna com a idade da pessoa
+        return res.getInt(res.getColumnIndexOrThrow(PersonEntry.COLUMN_AGE));
+    }
+
+    // Método que retorna com o sexo da pessoa
+    // @param (int) id - ID do registro no banco de dados
+    // @return (String) - Sexo da pessoa no banco de dados
+    public String getPersonSex(int id) {
+        // Define o seletor para o ID do registro
+        String[] selectionArgs = { String.valueOf(id) };
+
+        // Faz a busca no banco de dados
+        Cursor res = db.rawQuery("SELECT * FROM " + PersonEntry.TABLE_NAME + " WHERE " + PersonEntry._ID + " = " + id, null);
+        // Volta ao início do Cursor
+        res.moveToFirst();
+
+        // Retorna com o sexo da pessoa
+        return res.getString(res.getColumnIndexOrThrow(PersonEntry.COLUMN_SEX));
     }
 
     // Método que testa o funcionamento do banco de dados
