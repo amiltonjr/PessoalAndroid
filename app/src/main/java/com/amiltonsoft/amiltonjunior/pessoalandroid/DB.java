@@ -1,11 +1,11 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.content.Context;
-import android.content.ContentValues;
 
 public final class DB {
 
@@ -22,6 +22,8 @@ public final class DB {
     public String GREATHER          = ">";
 
     // Método construtor
+    // @param (Context) context - Contexto da aplicação
+    // @return (DB) - Objeto da classe
     public DB(Context context) {
         this.context    = context;
         mDbHelper       = new PostDbHelper(context);
@@ -29,6 +31,10 @@ public final class DB {
     }
 
     // Método que faz a inserção de um dado no banco de dados
+    // @param (String) name - Nome da pessoa
+    // @param (int) age - Idade da pessoa
+    // @param (String) sex - Sexo da pessoa
+    // @return (long) - ID da linha inserida
     public long insert(String name, int age, String sex) {
         // Prepara os valores a serem inseridos
         ContentValues values = new ContentValues();
@@ -41,6 +47,12 @@ public final class DB {
     }
 
     // Método que faz a leitura de uma pessoa no banco de dados
+    // @param (String) column - Nome da coluna de pesquisa
+    // @param (String) operan - Tipo de operador lógico
+    // @param (String) cValue - Valor da coluna
+    // @param (String) columnOrder - Nome da coluna de ordenação
+    // @param (String) order - Tipo de ordenação
+    // @return (Cursor) - Dados da pessoa
     public Cursor read(String column, String operand, String cValue, String columnOrder, String order) {
         // Define os parâmetros da consulta
         String[] projection = {
@@ -63,11 +75,18 @@ public final class DB {
     }
 
     // Método que faz a leitura de todas as pessoas no banco de dados
+    // @param (void)
+    // @return (Cursor) - Leitura de todas as pessoas no banco de dados
     public Cursor readAll() {
         return read(PersonEntry._ID, this.GREATHEROREQUALS, "0", PersonEntry._ID, this.ASC);
     }
 
     // Método que atualiza os dados de uma pessoa do banco de dados e retorna com o número de linhas afetadas
+    // @param (int) id - ID do registro no banco de dados
+    // @param (String) name - Nome da pessoa
+    // @param (int) age - Idade da pessoa
+    // @param (String) sex - Sexo da pessoa
+    // @return (int) - Número de linhas afetadas
     public int update(int id, String name, int age, String sex) {
         // Prepara os valores
         ContentValues values = new ContentValues();
@@ -84,6 +103,8 @@ public final class DB {
     }
 
     // Método que remove uma pessoa do banco de dados
+    // @param (int) id - ID do registro
+    // @return (void)
     public void delete(int id) {
         // Define o seletor para o ID do registro
         String selection = PersonEntry._ID + " = ?";
@@ -94,6 +115,8 @@ public final class DB {
     }
 
     // Método que remove todas as pessoas do banco de dados
+    // @param (void)
+    // @return (void)
     public void deleteAll() {
         // Define o seletor para o ID do registro
         String selection = PersonEntry._ID + " >= ?";
@@ -104,6 +127,8 @@ public final class DB {
     }
 
     // Método que testa o funcionamento do banco de dados
+    // @param (boolean) deleteAll - Flag para limpar o banco de dados
+    // @return (void)
     public void testDB(boolean deleteAll) {
         // Inserir dados
         this.insert("Amilton Junior", 24, "M");
@@ -171,19 +196,35 @@ public final class DB {
         public static final int DATABASE_VERSION = 1;
         public static final String DATABASE_NAME = "PersonDB.db";
 
+        // Método construtor
+        // @param (Context) context - Contexto da aplicação
+        // @return (PostDbHelper) - Objeto da classe
         public PostDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
+        // Método invocado ao criar o banco de dados
+        // @param (SQLiteDatabase) db - Objeto do banco de dados
+        // @return (void)
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(SQL_CREATE_PERSON);
         }
 
+        // Método invocado ao atualizar a versão do banco de dados
+        // @param (SQLiteDatabase) db - Objeto do banco de dados
+        // @param (int) oldVersion - Versão anterior do banco de dados
+        // @param (int) newVersion - Nova versão do banco de dados
+        // @return (void)
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL(SQL_DELETE_PERSON);
             onCreate(db);
         }
 
+        // Método invocado ao fazer downgrade de versão do banco de dados
+        // @param (SQLiteDatabase) db - Objeto do banco de dados
+        // @param (int) oldVersion - Versão anterior do banco de dados
+        // @param (int) newVersion - Nova versão do banco de dados
+        // @return (void)
         public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             onUpgrade(db, oldVersion, newVersion);
         }

@@ -1,24 +1,30 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
-import android.content.SharedPreferences;
 import android.content.Context;
+import android.content.SharedPreferences;
 
+// Classe Preferences
+// Objetivo: Manipular as SharedPreferences para salvar e recuperar dados curtos do aplicativo
 public class Preferences {
 
     // Atributos da classe
-    private String PREF_KEY         = "PESSOAS_PREFS";
-    private String SERVER_KEY       = "server";
-    private String PORT_KEY         = "port";
-    private String DEFAULT_SERVER   = "192.168.0.107";
-    private int DEFAULT_PORT        = 8080;
+    private String PREF_KEY         = "PESSOAS_PREFS"; // Chave das preferências
+    private String SERVER_KEY       = "server"; // Chave do atributo "server"
+    private String PORT_KEY         = "port"; // Chave do atributo "port"
+    private String DEFAULT_SERVER   = "192.168.0.107"; // Endereço IP padrão do servidor API
+    private int DEFAULT_PORT        = 8080; // Porta padrão do servidor API
     private Context context;
 
     // Método construtor
+    // @param (Context) context - Contexto da aplicação
+    // @return (Preferences) - Objeto da classe
     public Preferences(Context context) {
         this.context = context;
     }
 
     // Método que faz a leitura do servidor da API
+    // @param (void)
+    // @return (String) - Host do servidor da API
     public String getAPIServerHost() {
         String server = getPreferenceString(SERVER_KEY);
 
@@ -33,6 +39,8 @@ public class Preferences {
     }
 
     // Método que faz a leitura da porta do servidor da API
+    // @param (void)
+    // @return (int) - Número da porta
     public int getAPIServerPort() {
         int port = getPreferenceInt(PORT_KEY);
 
@@ -47,6 +55,9 @@ public class Preferences {
     }
 
     // Método que faz o salvamento de uma preferência em String
+    // @param (String) key - Chave do atributo
+    // @param (String) value - valor do atributo
+    // @return (void)
     public void setPreferenceString(String key, String value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
@@ -56,6 +67,9 @@ public class Preferences {
     }
 
     // Método que faz o salvamento de uma preferência em int
+    // @param (String) key - Chave do atributo
+    // @param (int) value - valor do atributo
+    // @return (void)
     public void setPreferenceInt(String key, int value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
@@ -65,6 +79,8 @@ public class Preferences {
     }
 
     // Método que faz a leitura de uma preferência em String
+    // @param (String) key - Chave do atributo
+    // @return (String) - Valor do atributo
     public String getPreferenceString(String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
@@ -72,6 +88,8 @@ public class Preferences {
     }
 
     // Método que faz a leitura de uma preferência em int
+    // @param (String) key - Chave do atributo
+    // @return (int) - Valor do atributo
     public int getPreferenceInt(String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
@@ -79,6 +97,8 @@ public class Preferences {
     }
 
     // Método que apaga todas as preferências
+    // @param (void)
+    // @return (void)
     public void clearPreferences() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
@@ -88,6 +108,8 @@ public class Preferences {
     }
 
     // Método que testa o funcionamento das preferências
+    // @param (void)
+    // @return (void)
     public void testPreferences() {
         // Define uma preferência
         this.setPreferenceString("Amilton", "Junior");
