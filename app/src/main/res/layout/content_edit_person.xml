@@ -46,7 +46,7 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblEditPerson" />
+        app:layout_constraintTop_toBottomOf="@+id/lblAddPerson" />
 
     <TextView
         android:id="@+id/lblAge"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextAge" />
 
     <TextView
-        android:id="@+id/lblEditPerson"
+        android:id="@+id/lblAddPerson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
