@@ -1,8 +1,12 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private Preferences preferences;
     private DB db;
     private API api;
-    private int selectedItemId  = -1;
-    private String USER_ID_KEY  = "ID"; // Chave do parâmetro para enviar entre as activities
+    private ProgressDialog pd;
+    private int selectedItemId      = -1;
+    private String USER_ID_KEY      = "ID"; // Chave do parâmetro para enviar entre as activities
 
     // Método que executa as rotinas de preparação e carregamento do aplicativo
     private void startApplication() {
@@ -65,13 +72,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Define para executar threads sem a necessidade de sincronizar
+        // Define o strict mode para permitir a execução das threads
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Botão transmitir
+        Button transmit = (Button) findViewById(R.id.bntTransmit);
+        // Listener do botão transmitir
+        transmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //System.out.println("Botão Transmitir clicado!");
+
+                try {
+                    // Envia os dados da API
+                    sendAPIdata();
+                } catch (Exception e) {
+                    // Exibe uma mensagem
+                    Toast.makeText(getBaseContext(), "Erro ao transmitir os dados!\nVerifique as configurações e tente novamente.", Toast.LENGTH_LONG).show();
+
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // Lista de pessoas
         final ListView listview = (ListView) findViewById(R.id.listview);
@@ -175,6 +203,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Método que envia os dados da API e exibe um dialog para o usuário aguardar
+    // @param (void)
+    // @return (void)
+    private void sendAPIdata() {
+
+        // Exibe a mensagem de aguarde
+        pd = ProgressDialog.show(MainActivity.this, "Transmitindo", "Aguarde...");
+
+        //start a new thread to process job
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Faz o envio dos dados da API
+                    api.sendData();
+                } catch (Exception e) {
+                    // Envia uma mensagem para sumir a mensagem de aguarde
+                    handler.sendEmptyMessage(0);
+
+                    e.printStackTrace();
+                }
+
+                // Aguarda a finalização da thread da API
+                while (api.thread_running) {
+                    try {
+                        Thread.sleep(1000); // Aguarda 1 segundo
+                    } catch (InterruptedException e) {
+                        // Envia uma mensagem para sumir a mensagem de aguarde
+                        handler.sendEmptyMessage(0);
+
+                        e.printStackTrace();
+                    }
+                }
+
+                // Envia uma mensagem para sumir a mensagem de aguarde
+                handler.sendEmptyMessage(0);
+            }
+        }).start();
+    }
+
+    // Processa as mensagens entre as threads no Android
+    @SuppressLint("HandlerLeak")
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            // Some com a mensagem de aguarde
+            pd.dismiss();
+
+            // Exibe uma mensagem de acordo com a resposta do servidor
+            if (api.response_code == api.OK_CODE)
+                Toast.makeText(getBaseContext(), "Dados transmitidos com sucesso!", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(getBaseContext(), "Erro ao transmitir os dados!\nVerifique as configurações e tente novamente.", Toast.LENGTH_LONG).show();
+        }
+    };
 
     // Método que abre a activity AddPersonActivity
     // @param (void)

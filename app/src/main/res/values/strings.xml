@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">Pessoas</string>
     <string name="action_settings">Configurações</string>
+    <string name="action_transmit">Transmitir Dados</string>
     <string name="title">Cadastro de Pessoal</string>
     <string name="title_activity_add_person">Adicionar Pessoa</string>
     <string name="title_activity_edit_person">Editar Pessoa</string>
     <string name="title_activity_settings">Configurações</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
@@ -31,7 +29,6 @@
         <item>-1</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>

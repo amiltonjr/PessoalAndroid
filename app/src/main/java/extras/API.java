@@ -1,6 +1,10 @@
 package extras;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.widget.Toast;
+
+import com.amiltonsoft.amiltonjunior.pessoalandroid.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +26,11 @@ public class API {
     private String server;
     private int port;
     private DB db;
-    public int OK_CODE      = 200; // Código de sucesso
-    public int ERROR_CODE   = 405; // Código de erro
+    private String json_string      = ""; // String que será transmitida ao servidor da API
+    public boolean thread_running   = false; // Flag que indica se a thread de transmitir está rodando
+    public int response_code        = 0; // Código de resposta do servidor
+    public int OK_CODE              = 200; // Código de sucesso
+    public int ERROR_CODE           = 405; // Código de erro
 
     // Método construtor
     // @param (String) server - Host do servidor
@@ -31,41 +38,19 @@ public class API {
     // @param (DB) db - Objeto do banco de dados
     // @return (API) - Objeto da classe
     public API(String server, int port, DB db) {
-        this.server = server;
-        this.port   = port;
-        this.db     = db;
+        this.server     = server;
+        this.port       = port;
+        this.db         = db;
 
         System.out.println("Usando servidor da API, host = " + server + ", porta = " + port);
     }
 
     // Método que faz o envio dos dados da API
     // @param (void)
-    // @return (int) - Código de resposta do servidor da API
-    public int sendData() throws JSONException, IOException {
-        // Obtém os dados em formato JSON
-        String json = getAllPersonJson().toString();
-
-        //System.out.println("String json = " + json);
-
-        // Cria um objeto Client HTTP
-        OkHttpClient client = new OkHttpClient();
-
-        // Prepara o envio dos dados
-        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("data", json).build();
-        Request request         = new Request.Builder().url(getAPIUrl()).post(requestBody).build();
-
-        // Faz o envio dos dados
-        try (Response response = client.newCall(request).execute()) {
-            // Em caso de erro, dispara uma exceção
-            if (!response.isSuccessful())
-                return ERROR_CODE;
-
-            // Converte a resposta para JSON
-            JSONObject jsonResponse = new JSONObject(response.body().string());
-
-            // Retorna com o código de resposta de acordo com o recebido do servidor
-            return jsonResponse.getJSONObject("response").getInt("code");
-        }
+    // @return (void)
+    public void sendData() throws Exception {
+        // Faz a transmissão dos dados
+        new APIthread().run();
     }
 
     // Método que retorna com a URL do servidor da API
@@ -132,14 +117,68 @@ public class API {
         System.out.println("\nEnviando dados para o servidor API...\n");
         try {
             // Envia os dados da API
-            int res = this.sendData();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            this.sendData();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         db.deleteAll();
+    }
+
+    // Classe que faz o envio assíncrono dos dados da API
+    public final class APIthread {
+
+        // Método que executa a thread
+        public void run() throws Exception {
+
+            // Reseta o código de resposta do servidor
+            response_code = 0;
+
+            // Marca que a thread está rodando
+            thread_running = true;
+
+            // Obtém os dados em formato JSON
+            json_string = getAllPersonJson().toString();
+
+            System.out.println("Transmitindo dados da API...");
+
+            // Cria um objeto Client HTTP
+            OkHttpClient client = new OkHttpClient();
+
+            // Prepara o envio dos dados
+            RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("data", json_string).build();
+            Request request         = new Request.Builder().url(getAPIUrl()).post(requestBody).build();
+
+            // Faz o envio dos dados
+            try (Response response = client.newCall(request).execute()) {
+
+                // Em caso de erro, dispara uma exceção
+                if (!response.isSuccessful()) {
+                    // Marca que a thread não está rodando
+                    thread_running = false;
+
+                    throw new Exception();
+                }
+
+                // Converte a resposta para JSON
+                try {
+                    JSONObject jsonResponse = new JSONObject(response.body().string());
+
+                    // Salva o código de resposta de acordo com o recebido do servidor
+                    response_code = jsonResponse.getJSONObject("response").getInt("code");
+
+                    // Marca que a thread não está rodando
+                    thread_running = false;
+                } catch (JSONException e) {
+                    // Marca que a thread não está rodando
+                    thread_running = false;
+
+                    throw new Exception();
+                }
+            }
+
+        }
+
     }
 
 }
