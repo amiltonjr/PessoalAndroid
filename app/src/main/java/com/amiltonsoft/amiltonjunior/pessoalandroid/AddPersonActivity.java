@@ -1,8 +1,6 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import extras.DB;
 
 public class AddPersonActivity extends AppCompatActivity {
 
@@ -24,11 +24,11 @@ public class AddPersonActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Cria os ponteiros para os elementos da activity
-        EditText name   = (EditText) findViewById(R.id.editTextName);
-        EditText age    = (EditText) findViewById(R.id.editTextAge);
-        Spinner sex     = (Spinner) findViewById(R.id.spinnerSex);
-        Button save     = (Button) findViewById(R.id.btnSave);
-        Button cancel   = (Button) findViewById(R.id.btnCancel);
+        final EditText name = (EditText) findViewById(R.id.editTextName);
+        final EditText age  = (EditText) findViewById(R.id.editTextAge);
+        final Spinner sex   = (Spinner) findViewById(R.id.spinnerSex);
+        Button save         = (Button) findViewById(R.id.btnSave);
+        Button cancel       = (Button) findViewById(R.id.btnCancel);
 
         // Adiciona as opções ao spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
@@ -40,7 +40,14 @@ public class AddPersonActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("Botão Salvar clicado!");
+                //System.out.println("Botão Salvar clicado!");
+
+                // Salva os dados do formulário no banco de dados
+                DB db = new DB(getBaseContext());
+                db.insert(name.getText().toString(), Integer.valueOf(age.getText().toString()), sex.getSelectedItem().toString());
+
+                // Encerra a activity
+                finish();
 
             }
         });

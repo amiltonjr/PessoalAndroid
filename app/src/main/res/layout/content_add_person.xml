@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_add_person">
 
     <EditText
-        android:id="@+id/addTextName"
+        android:id="@+id/editTextName"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -56,7 +56,7 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTextName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <TextView
         android:id="@+id/lblSex"
