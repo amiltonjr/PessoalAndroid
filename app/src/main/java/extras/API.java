@@ -1,4 +1,4 @@
-package com.amiltonsoft.amiltonjunior.pessoalandroid;
+package extras;
 
 import android.database.Cursor;
 
@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import extras.DB;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

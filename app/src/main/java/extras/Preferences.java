@@ -1,4 +1,4 @@
-package com.amiltonsoft.amiltonjunior.pessoalandroid;
+package extras;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package com.amiltonsoft.amiltonjunior.pessoalandroid;
+package extras;
 
 import android.content.ContentValues;
 import android.content.Context;
