@@ -147,15 +147,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listview.setOnContextClickListener(new View.OnContextClickListener() {
-            @Override
-            public boolean onContextClick(View view) {
-                System.out.println("CLICADO");
-
-                return false;
-            }
-        });
-
         // Preenche a lista
         fillPersonList(listview);
 
