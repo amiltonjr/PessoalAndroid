@@ -1,5 +1,6 @@
 package com.amiltonsoft.amiltonjunior.pessoalandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -71,7 +72,17 @@ public class EditPersonActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("Botão Excluir clicado!");
+                //System.out.println("Botão Excluir clicado!");
+
+                // Inicia a RemovePersonActivity passando o ID do item como parâmetro
+                Intent intent = new Intent(EditPersonActivity.this, RemovePersonActivity.class);
+                Bundle b = new Bundle();
+                b.putInt(USER_ID_KEY, userID);
+                intent.putExtras(b);
+                startActivity(intent);
+
+                // Encerra a activity atual
+                finish();
 
             }
         });
