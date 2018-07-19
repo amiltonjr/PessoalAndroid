@@ -45,7 +45,13 @@ public class Preferences {
         String port = getPreference(PORT_KEY);
 
         // Se a porta não estiver salva ou for inválida, usa a padrão
-        if (port.equals("") || Integer.valueOf(port) < 80 || Integer.valueOf(port)  > 49151) {
+        try {
+            if (Integer.valueOf(port) < 80 || Integer.valueOf(port) > 49151) {
+                port = DEFAULT_PORT;
+
+                setPreference(PORT_KEY, port);
+            }
+        } catch (NumberFormatException e) {
             port = DEFAULT_PORT;
 
             setPreference(PORT_KEY, port);
