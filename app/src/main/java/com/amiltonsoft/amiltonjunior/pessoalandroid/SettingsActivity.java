@@ -12,6 +12,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.webkit.URLUtil;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,10 +32,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
+            // Obtém o valor da preferência
             String stringValue = value.toString();
 
-            // Atualiza nas preferências globais do aplicativo
+            // Cria um objeto Preferences
             Preferences prefs = new Preferences(context);
+
+            // Objeto auxiliar para validar a URL
+            URLUtil urlUtil = new URLUtil();
+
+            // Valida o valor digitado de acordo com o tipo da preferência
+
+            // Se é o host do servidor
+            if (preference.getKey().equals(prefs.SERVER_KEY) && (stringValue.length() < 14 || !urlUtil.isValidUrl(stringValue))) {
+                Toast.makeText(context, "Caminho do servidor inválido!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+            // Se é a porta do servidor
+            else if (preference.getKey().equals(prefs.PORT_KEY) && (Integer.valueOf(stringValue) < 80 || Integer.valueOf(stringValue) > 49151)) {
+                Toast.makeText(context, "Porta do servidor inválida!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+
+            // Atualiza nas preferências globais do aplicativo
             prefs.setPreference(preference.getKey(), stringValue);
 
             preference.setSummary(stringValue);

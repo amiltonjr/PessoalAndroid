@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import extras.DB;
 
@@ -42,12 +43,43 @@ public class AddPersonActivity extends AppCompatActivity {
 
                 //System.out.println("Botão Salvar clicado!");
 
-                // Salva os dados do formulário no banco de dados
-                DB db = new DB(getBaseContext());
-                db.insert(name.getText().toString(), Integer.valueOf(age.getText().toString()), sex.getSelectedItem().toString());
+                try {
 
-                // Encerra a activity
-                finish();
+                    // Obtém os dados dos campos
+                    String data_name    = name.getText().toString();
+                    int data_age        = Integer.valueOf(age.getText().toString());
+                    String data_sex     = sex.getSelectedItem().toString();
+
+                    // Valida cada um dos campos
+                    if (data_name.length() < 3) {
+                        Toast.makeText(getBaseContext(), "Nome inválido!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                        return;
+                    }
+                    else if (data_age < 1 || data_age > 130) {
+                        Toast.makeText(getBaseContext(), "Idade inválida!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                        return;
+                    }
+                    else if (!(data_sex.equals("M") || data_sex.equals("F"))) {
+                        Toast.makeText(getBaseContext(), "Sexo inválido!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                        return;
+                    }
+
+                    // Salva os dados do formulário no banco de dados
+                    DB db = new DB(getBaseContext());
+                    db.insert(data_name, data_age, data_sex);
+
+                    // Encerra a activity
+                    finish();
+
+                } catch (Exception e) {
+
+                    Toast.makeText(getBaseContext(), "Dados inválidos!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                    return;
+                }
 
             }
         });
