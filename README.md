@@ -13,3 +13,6 @@ Recursos Utilizados:
 
 Classe principal:
 	app/java/com.amiltonsoft.amiltonjunior.pessoalandroid/MainActivity.java
+
+Arquivo executável:
+	1.0.0/app.apk
