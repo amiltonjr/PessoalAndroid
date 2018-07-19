@@ -29,6 +29,7 @@ public class API {
     private String json_string      = ""; // String que será transmitida ao servidor da API
     public boolean thread_running   = false; // Flag que indica se a thread de transmitir está rodando
     public int response_code        = 0; // Código de resposta do servidor
+    public String API_PATH          = "/api"; // Caminho do diretório da API
     public int OK_CODE              = 200; // Código de sucesso
     public int ERROR_CODE           = 405; // Código de erro
 
@@ -57,7 +58,7 @@ public class API {
     // @param (void)
     // @return (String) - URL formatada do servidor
     public String getAPIUrl() {
-        return server + ":" + port + "/api";
+        return server + ":" + port + API_PATH;
     }
 
     // Método que converte todos os dados das pessoas no banco de dados para JSON
