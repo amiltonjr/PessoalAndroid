@@ -209,6 +209,13 @@ public class MainActivity extends AppCompatActivity {
     // @return (void)
     private void sendAPIdata() {
 
+        // Se não existem pessoas gravadas no banco de dados
+        if (db.readAll().getCount() == 0) {
+            Toast.makeText(getBaseContext(), "Não há nenhuma informação de pessoa para transmitir!", Toast.LENGTH_LONG).show();
+
+            return;
+        }
+
         // Exibe a mensagem de aguarde
         pd = ProgressDialog.show(MainActivity.this, "Transmitindo", "Aguarde...");
 
@@ -219,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     // Faz o envio dos dados da API
                     api.sendData();
+
                 } catch (Exception e) {
                     // Envia uma mensagem para sumir a mensagem de aguarde
                     handler.sendEmptyMessage(0);
