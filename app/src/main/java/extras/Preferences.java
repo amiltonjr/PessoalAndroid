@@ -9,10 +9,10 @@ public class Preferences {
 
     // Atributos da classe
     private String PREF_KEY         = "PESSOAS_PREFS"; // Chave das preferências
-    private String SERVER_KEY       = "server"; // Chave do atributo "server"
-    private String PORT_KEY         = "port"; // Chave do atributo "port"
+    public String SERVER_KEY        = "server_host"; // Chave do atributo "server"
+    public String PORT_KEY          = "server_port"; // Chave do atributo "port"
     private String DEFAULT_SERVER   = "192.168.0.107"; // Endereço IP padrão do servidor API
-    private int DEFAULT_PORT        = 8080; // Porta padrão do servidor API
+    private String DEFAULT_PORT     = "8080"; // Porta padrão do servidor API
     private Context context;
 
     // Método construtor
@@ -26,13 +26,13 @@ public class Preferences {
     // @param (void)
     // @return (String) - Host do servidor da API
     public String getAPIServerHost() {
-        String server = getPreferenceString(SERVER_KEY);
+        String server = getPreference(SERVER_KEY);
 
         // Se o servidor não estiver salvo ou for inválido, usa o padrão
         if (server.length() < 7) {
             server = DEFAULT_SERVER;
 
-            setPreferenceString(SERVER_KEY, server);
+            setPreference(SERVER_KEY, server);
         }
 
         return server;
@@ -40,25 +40,25 @@ public class Preferences {
 
     // Método que faz a leitura da porta do servidor da API
     // @param (void)
-    // @return (int) - Número da porta
-    public int getAPIServerPort() {
-        int port = getPreferenceInt(PORT_KEY);
+    // @return (String) - Número da porta
+    public String getAPIServerPort() {
+        String port = getPreference(PORT_KEY);
 
         // Se a porta não estiver salva ou for inválida, usa a padrão
-        if (port < 80 || port  > 49151) {
+        if (port.equals("") || Integer.valueOf(port) < 80 || Integer.valueOf(port)  > 49151) {
             port = DEFAULT_PORT;
 
-            setPreferenceInt(PORT_KEY, port);
+            setPreference(PORT_KEY, port);
         }
 
         return port;
     }
 
-    // Método que faz o salvamento de uma preferência em String
+    // Método que faz o salvamento de uma preferência
     // @param (String) key - Chave do atributo
     // @param (String) value - valor do atributo
     // @return (void)
-    public void setPreferenceString(String key, String value) {
+    public void setPreference(String key, String value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -66,34 +66,13 @@ public class Preferences {
         editor.apply();
     }
 
-    // Método que faz o salvamento de uma preferência em int
-    // @param (String) key - Chave do atributo
-    // @param (int) value - valor do atributo
-    // @return (void)
-    public void setPreferenceInt(String key, int value) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(key, value);
-        editor.apply();
-    }
-
     // Método que faz a leitura de uma preferência em String
     // @param (String) key - Chave do atributo
     // @return (String) - Valor do atributo
-    public String getPreferenceString(String key) {
+    public String getPreference(String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
         return sharedPreferences.getString(key, "");
-    }
-
-    // Método que faz a leitura de uma preferência em int
-    // @param (String) key - Chave do atributo
-    // @return (int) - Valor do atributo
-    public int getPreferenceInt(String key) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-
-        return sharedPreferences.getInt(key, 0);
     }
 
     // Método que apaga todas as preferências
@@ -112,10 +91,10 @@ public class Preferences {
     // @return (void)
     public void testPreferences() {
         // Define uma preferência
-        this.setPreferenceString("Amilton", "Junior");
+        this.setPreference("Amilton", "Junior");
 
         // Faz a leitura da preferência
-        System.out.println("[Preference] Amilton = " + this.getPreferenceString("Amilton"));
+        System.out.println("[Preference] Amilton = " + this.getPreference("Amilton"));
 
         // Remove todas as preferências
         this.clearPreferences();
