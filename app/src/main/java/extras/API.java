@@ -57,7 +57,7 @@ public class API {
     // @param (void)
     // @return (String) - URL formatada do servidor
     public String getAPIUrl() {
-        return "http://" + server + ":" + port + "/api";
+        return server + ":" + port + "/api";
     }
 
     // Método que converte todos os dados das pessoas no banco de dados para JSON

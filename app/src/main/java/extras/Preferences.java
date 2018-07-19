@@ -11,7 +11,7 @@ public class Preferences {
     private String PREF_KEY         = "PESSOAS_PREFS"; // Chave das preferências
     public String SERVER_KEY        = "server_host"; // Chave do atributo "server"
     public String PORT_KEY          = "server_port"; // Chave do atributo "port"
-    private String DEFAULT_SERVER   = "192.168.0.107"; // Endereço IP padrão do servidor API
+    private String DEFAULT_SERVER   = "http://127.0.0.1"; // Host padrão do servidor API
     private String DEFAULT_PORT     = "8080"; // Porta padrão do servidor API
     private Context context;
 
