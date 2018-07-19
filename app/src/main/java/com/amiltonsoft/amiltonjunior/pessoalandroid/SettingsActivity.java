@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             // Obtém o valor da preferência
-            String stringValue = value.toString();
+            String stringValue = value.toString().trim();
 
             // Cria um objeto Preferences
             Preferences prefs = new Preferences(context);
@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Valida o valor digitado de acordo com o tipo da preferência
 
             // Se é o host do servidor
-            if (preference.getKey().equals(prefs.SERVER_KEY) && (stringValue.length() < 14 || !urlUtil.isValidUrl(stringValue))) {
+            if (preference.getKey().equals(prefs.SERVER_KEY) && (!stringValue.substring(0, 4).equals("http") || stringValue.length() < 14 || !urlUtil.isValidUrl(stringValue))) {
                 Toast.makeText(context, "Caminho do servidor inválido!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
 
                 return false;
@@ -55,10 +55,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 return false;
             }
+            // Se é a caminho do servidor
+            else if (preference.getKey().equals(prefs.PATH_KEY) && (stringValue.length() < 1 || (stringValue.length() == 1 && !stringValue.equals("/")))) {
+                Toast.makeText(context, "Caminho/diretório do servidor inválido!\nVerifique os dados digitados e tente novamente.", Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+
+            // Remove alguma barra se houver no fim do host do servidor
+            while (preference.getKey().equals(prefs.SERVER_KEY) && stringValue.charAt(stringValue.length() - 1) == '/')
+                stringValue = stringValue.substring(0, stringValue.length() - 1);
+
+            System.out.println("stringValue = <" + stringValue + ">");
 
             // Atualiza nas preferências globais do aplicativo
             prefs.setPreference(preference.getKey(), stringValue);
 
+            // Atualiza nos valores da activity
+            preference.setDefaultValue(stringValue);
             preference.setSummary(stringValue);
 
             return true;
@@ -166,9 +180,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             // Obtém os dados das preferências
             Preferences prefs = new Preferences(getContext());
+
             // Define os valores padrão
             findPreference(prefs.SERVER_KEY).setDefaultValue(prefs.getAPIServerHost());
             findPreference(prefs.PORT_KEY).setDefaultValue(prefs.getAPIServerPort());
+            findPreference(prefs.PATH_KEY).setDefaultValue(prefs.getAPIServerPath());
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
@@ -176,6 +192,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(prefs.SERVER_KEY));
             bindPreferenceSummaryToValue(findPreference(prefs.PORT_KEY));
+            bindPreferenceSummaryToValue(findPreference(prefs.PATH_KEY));
         }
 
         @Override

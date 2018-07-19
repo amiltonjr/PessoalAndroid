@@ -11,5 +11,7 @@
     <string name="pref_default_host">http://127.0.0.1</string>
     <string name="pref_title_port">Porta</string>
     <string name="pref_default_port">8080</string>
+    <string name="pref_title_path">Caminho/Diretório</string>
+    <string name="pref_default_path">/</string>
     <string name="title_activity_remove_person">Excluir uma Pessoa</string>
 </resources>

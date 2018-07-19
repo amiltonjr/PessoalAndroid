@@ -11,8 +11,10 @@ public class Preferences {
     private String PREF_KEY         = "PESSOAS_PREFS"; // Chave das preferências
     public String SERVER_KEY        = "server_host"; // Chave do atributo "server"
     public String PORT_KEY          = "server_port"; // Chave do atributo "port"
+    public String PATH_KEY          = "server_path"; // Chave do atributo "path"
     private String DEFAULT_SERVER   = "http://127.0.0.1"; // Host padrão do servidor API
     private String DEFAULT_PORT     = "8080"; // Porta padrão do servidor API
+    private String DEFAULT_PATH     = "/"; // Caminho padrão do servidor API
     private Context context;
 
     // Método construtor
@@ -58,6 +60,22 @@ public class Preferences {
         }
 
         return port;
+    }
+
+    // Método que faz a leitura do caminho do servidor da API
+    // @param (void)
+    // @return (String) - Caminho da API
+    public String getAPIServerPath() {
+        String path = getPreference(PATH_KEY);
+
+        // Se o caminho não estiver salvs ou for inválids, usa o padrão
+        if (path.length() < 1 || (path.length() == 1 && !path.equals("/"))) {
+            path = DEFAULT_PATH;
+
+            setPreference(PATH_KEY, path);
+        }
+
+        return path;
     }
 
     // Método que faz o salvamento de uma preferência

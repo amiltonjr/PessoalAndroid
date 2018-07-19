@@ -25,11 +25,11 @@ public class API {
     // Atributos da classe
     private String server;
     private int port;
+    private String path;
     private DB db;
     private String json_string      = ""; // String que será transmitida ao servidor da API
     public boolean thread_running   = false; // Flag que indica se a thread de transmitir está rodando
     public int response_code        = 0; // Código de resposta do servidor
-    public String API_PATH          = "/api"; // Caminho do diretório da API
     public int OK_CODE              = 200; // Código de sucesso
     public int ERROR_CODE           = 405; // Código de erro
 
@@ -38,12 +38,13 @@ public class API {
     // @param (int) port - Número da porta do servidor
     // @param (DB) db - Objeto do banco de dados
     // @return (API) - Objeto da classe
-    public API(String server, int port, DB db) {
+    public API(String server, int port, String path, DB db) {
         this.server     = server;
         this.port       = port;
+        this.path       = path;
         this.db         = db;
 
-        System.out.println("Usando servidor da API, host = " + server + ", porta = " + port);
+        System.out.println("Usando servidor da API, host = " + server + ", porta = " + port + ", caminho = " + path);
     }
 
     // Método que faz o envio dos dados da API
@@ -58,7 +59,7 @@ public class API {
     // @param (void)
     // @return (String) - URL formatada do servidor
     public String getAPIUrl() {
-        return server + ":" + port + API_PATH;
+        return server + ":" + port + path;
     }
 
     // Método que converte todos os dados das pessoas no banco de dados para JSON

@@ -20,4 +20,14 @@
         android:singleLine="true"
         android:title="@string/pref_title_port" />
 
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_path"
+        android:inputType="textCapWords"
+        android:key="server_path"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_path" />
+
 </PreferenceScreen>

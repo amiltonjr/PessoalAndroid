@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         db = new DB(getBaseContext());
 
         // Inicializa o objeto API
-        api = new API(preferences.getAPIServerHost(), Integer.valueOf(preferences.getAPIServerPort()), db);
+        api = new API(preferences.getAPIServerHost(), Integer.valueOf(preferences.getAPIServerPort()), preferences.getAPIServerPath(), db);
 
         // Caso queira testar as funcionalidades, basta descomentar
         //preferences.testPreferences();
